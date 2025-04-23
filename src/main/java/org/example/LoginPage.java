@@ -1,5 +1,4 @@
 package org.example;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -19,7 +18,7 @@ public class LoginPage {
     private WebElement emailInput;
     @FindBy(id = "password")
     private WebElement passwordInput;
-    @FindBy(css = ".ubsStyle")
+    @FindBy(css = "button.greenStyle[type='submit']")
     private WebElement signInSubmitButton;
     @FindBy(xpath = "//*[@id=\"email-err-msg\"]/app-error/div")
     private WebElement errorEmail;

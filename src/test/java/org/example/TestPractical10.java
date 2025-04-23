@@ -1,5 +1,6 @@
+package org.example;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.example.LoginPage;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -7,10 +8,10 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-public class Practical_Task_10 {
+public class TestPractical10 {
     private static WebDriver driver;
     private LoginPage loginPage;
 
@@ -54,8 +55,8 @@ public class Practical_Task_10 {
     })
     public void signInNotValid(String message) {
         loginPage.openLoginForm();
-        loginPage.fillEmail("samplestesgreencity.com"); // without @
-        loginPage.fillPassword("uT346^^^erw");
+        loginPage.fillEmail("artem.a.bagdasaryan@gmail.com"); // without @
+        loginPage.fillPassword("Archi246!");
         assertThat(loginPage.getEmailError(), is(message));
     }
 
