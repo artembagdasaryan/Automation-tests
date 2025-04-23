@@ -7,11 +7,16 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TestPractical10 {
+    private static final Long IMPLICITLY_WAIT_SECONDS = 10L;
     private static WebDriver driver;
     private LoginPage loginPage;
 
@@ -19,8 +24,19 @@ public class TestPractical10 {
     public static void setUp() {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(IMPLICITLY_WAIT_SECONDS));
         driver.get("https://www.greencity.cx.ua/#/greenCity");
         driver.manage().window().setSize(new Dimension(1264, 798));
+    }
+
+    @AfterAll
+    public void tear() {
+        if (driver != null) {
+            driver.quit();
+            //driver.close();
+        }
+        //
+        System.out.println("@AfterAll executed");
     }
 
     @BeforeEach
@@ -30,7 +46,10 @@ public class TestPractical10 {
 
     @Test
     public void verifyTitle() {
-        Assertions.assertEquals("GreenCity — Build Eco-Friendly Habits Today", driver.getTitle());
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(webDriver -> webDriver.getTitle().contains("GreenCity"));
+
+        Assertions.assertEquals("GreenCity", driver.getTitle());
     }
 
     @ParameterizedTest
