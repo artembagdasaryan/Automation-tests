@@ -10,7 +10,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 
-public class TestSamples3 {
+public class Practical_Task_10 {
     private static WebDriver driver;
     private LoginPage loginPage;
 
@@ -18,7 +18,7 @@ public class TestSamples3 {
     public static void setUp() {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
-        driver.get("https://www.greencity.social/");
+        driver.get("https://www.greencity.cx.ua/#/greenCity");
         driver.manage().window().setSize(new Dimension(1264, 798));
     }
 
@@ -29,7 +29,7 @@ public class TestSamples3 {
 
     @Test
     public void verifyTitle() {
-        Assertions.assertEquals("GreenCity", driver.getTitle());
+        Assertions.assertEquals("GreenCity — Build Eco-Friendly Habits Today", driver.getTitle());
     }
 
     @ParameterizedTest

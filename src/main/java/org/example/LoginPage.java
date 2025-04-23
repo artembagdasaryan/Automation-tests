@@ -7,9 +7,9 @@ import org.openqa.selenium.support.PageFactory;
 
 public class LoginPage {
 
-    @FindBy(css = "app-header:nth-child(1) .ubs-header-sing-in-img")
+    @FindBy(css = "header img.ubs-header-sing-in-img.ubs-header-sing-in-img-greencity")
     private WebElement signInButton;
-    @FindBy(css = ".ng-star-inserted > h1")
+    @FindBy(css = "#mat-mdc-dialog-0 app-sign-in h1")
     private WebElement welcomeText;
     @FindBy(css = "h2:nth-child(2)")
     private WebElement signInDetailsText;
