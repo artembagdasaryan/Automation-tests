@@ -1,0 +1,4 @@
+email,password,errorType,expectedMessage
+valid@email.com,12345,errorPassword,Invalid password
+invalidemail.com,ValidPassword123,errorEmail,Invalid email
+nonactivated@greencity.com,ValidPassword123,nonActivatedAcc,Account doesn't exist
