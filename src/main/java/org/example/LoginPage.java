@@ -27,7 +27,7 @@ public class LoginPage {
     private WebElement errorEmail;
     @FindBy(id = "password")
     private WebElement passwordInput;
-    @FindBy(css = ".margining")
+    @FindBy(css = "#pass-err-msg")
     private WebElement errorPassword;
     @FindBy(css = ".greenStyle")
     private WebElement signInSubmitButton;
@@ -68,6 +68,14 @@ public class LoginPage {
 
     public String getEmailError() {
         return errorEmail.getText();
+    }
+
+    public String getPasswordError() {
+        return errorPassword.getText();
+    }
+
+    public String getNonActivatedAccError() {
+        return NonActivatedAcc.getText();
     }
 
     public String getEmailInputValue() {
