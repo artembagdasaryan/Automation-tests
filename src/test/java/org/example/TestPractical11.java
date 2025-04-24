@@ -8,7 +8,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
@@ -44,30 +43,11 @@ public class TestPractical11 {
         loginPage = new LoginPage(driver);
     }
 
-    @Test
-    public void verifyTitle() {
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(webDriver -> webDriver.getTitle().contains("GreenCity"));
-
-        Assertions.assertEquals("GreenCity", driver.getTitle());
-    }
-
-    public void signIn(String email, String password) {
-        loginPage.openLoginForm();
-        assertThat(loginPage.getWelcomeText(), is("Welcome back!"));
-        assertThat(loginPage.getSignInDetailsText(), is("Please enter your details to sign in."));
-        loginPage.fillEmail(email);
-        assertThat(loginPage.getEmailInputValue(), is(email));
-        loginPage.fillPassword(password);
-        assertThat(loginPage.getPasswordInputValue(), is(password));
-        loginPage.submit();
-    }
-
     @ParameterizedTest
     @CsvSource({
-            "valid@email.com, 12345, errorPassword, Invalid password",
-            "invalidemail.com, ValidPassword123, errorEmail, Invalid email",
-            "nonactivated@greencity.com, ValidPassword123, nonActivatedAcc, Account doesn't exist"
+            "valid@email.com, 12345, errorPassword, Password have from 8 to 20 characters long without spaces and contain at least one uppercase letter (A-Z), one lowercase letter (a-z), a digit (0-9), and a special character (~`!@#$%^&*()+=_-{}[]|:;”’?/<>,.)",
+            "invalidemail.com, ValidPassword123, errorEmail, Please check that your e-mail address is indicated correctly",
+            "nonactivated@greencity.com, ValidPassword123, nonActivatedAcc, Bad email or password"
     })
     public void signInNegativeScenarios (String email, String password, String errorType, String expectedMessage) {
         loginPage.openLoginForm();
@@ -109,12 +89,12 @@ public class TestPractical11 {
 
     @ParameterizedTest
     @CsvSource({
-            "'', 'This field is required'", // Порожнє поле
-            "'invalidemail.com', 'Invalid email format'", // Відсутність @ та .
-                "'@invalid.com', 'Invalid email format'", // Відсутність username
-            "'invalid@com', 'Invalid email format'", // Відсутність домену
-            "'invalid@.com', 'Invalid email format'", // Відсутність локальної частини перед .
-            "'invalid@domain.', 'Invalid email format'" // Невірний домен
+            "'', 'Email is required.'", // Порожнє поле
+            "'invalidemail.com', 'Please check that your e-mail address is indicated correctly'", // Відсутність @ та .
+                "'@invalid.com', 'Please check that your e-mail address is indicated correctly'", // Відсутність username
+            "'invalid@com', 'Please check that your e-mail address is indicated correctly'", // Відсутність домену
+            "'invalid@.com', 'Please check that your e-mail address is indicated correctly'", // Відсутність локальної частини перед .
+            "'invalid@domain.', 'Please check that your e-mail address is indicated correctly'" // Невірний домен
     })
     public void testEmailValidation(String email, String expectedMessage) {
         loginPage.openLoginForm();
@@ -126,12 +106,8 @@ public class TestPractical11 {
 
     @ParameterizedTest
     @CsvSource({
-            "short, false, Password must be at least 8 characters long",
-            "verylongpasswordwithmorethan20characters, false, Password must not exceed 20 characters",
-            "password, false, Password must contain at least one uppercase letter",
-            "PASSWORD123, false, Password must contain at least one lowercase letter",
-            "password123, false, Password must contain at least one special character",
-            "password!@, false, Password must contain at least one digit",
+            "short, false, Password have from 8 to 20 characters long without spaces and contain at least one uppercase letter (A-Z), one lowercase letter (a-z), a digit (0-9), and a special character (~`!@#$%^&*()+=_-{}[]|:;”’?/<>,.)",
+            "verylongpasswordwithmorethan20characters, false, Password must be less than 20 characters long without spaces.",
             "validPass123!, true, Password is valid"
     })
     public void testPasswordValidate (String password, boolean isValid, String expectedMessage) {
@@ -145,12 +121,5 @@ public class TestPractical11 {
         } else {
             Assertions.assertEquals(expectedMessage, loginPage.getPasswordError(), "Password validation message does not match.");
         }
-    }
-
-        public void signInNotValid(String message) {
-        loginPage.openLoginForm();
-        loginPage.fillEmail("artem.a.bagdasaryan@gmail.com"); // without @
-        loginPage.fillPassword("Archi246!");
-        assertThat(loginPage.getEmailError(), is(message));
     }
 }

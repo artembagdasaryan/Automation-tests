@@ -1,4 +1,4 @@
 email,password,errorType,expectedMessage
-valid@email.com,12345,errorPassword,Invalid password
-invalidemail.com,ValidPassword123,errorEmail,Invalid email
-nonactivated@greencity.com,ValidPassword123,nonActivatedAcc,Account doesn't exist
+"valid@email.com, 12345, errorPassword, Password have from 8 to 20 characters long without spaces and contain at least one uppercase letter (A-Z), one lowercase letter (a-z), a digit (0-9), and a special character (~`!@#$%^&*()+=_-{}[]|:;”’?/<>,.)"
+"invalidemail.com, ValidPassword123, errorEmail, Please check that your e-mail address is indicated correctly"
+"nonactivated@greencity.com, ValidPassword123, nonActivatedAcc, Bad email or password"
