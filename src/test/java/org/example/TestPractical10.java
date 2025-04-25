@@ -59,10 +59,34 @@ public class TestPractical10 {
         assertThat(loginPage.getPasswordInputValue(), is(password));
         loginPage.submit();
     }
-    public void signInNotValid(String message) {
+    @Test
+    @DisplayName("Sign in with invalid email should show error")
+    public void notValidEmail() {
         loginPage.openLoginForm();
-        loginPage.fillEmail("artem.a.bagdasaryan@gmail.com"); // without @
-        loginPage.fillPassword("Archi246!");
-        assertThat(loginPage.getEmailError(), is(message));
+        loginPage.fillEmail("invalid@com");
+        loginPage.fillPassword("Qwerty1!");
+        loginPage.submit();
+        String ExpectedError = "Email must be valid";
+        assertThat(loginPage.getEmailError(), is(ExpectedError));
+    }
+    @Test
+    @DisplayName("Sign in with invalid password should show error")
+    public void notValidPassword() {
+        loginPage.openLoginForm();
+        loginPage.fillEmail("invalid@ar.com");
+        loginPage.fillPassword("123");
+        loginPage.submit();
+        String ExpectedError = "Password have from 8 to 20 characters long without spaces and contain at least one uppercase letter (A-Z), one lowercase letter (a-z), a digit (0-9), and a special character (~`!@#$%^&*()+=_-{}[]|:;”’?/<>,.)\"";
+        assertThat(loginPage.getPasswordError(), is(ExpectedError));
+    }
+    @Test
+    @DisplayName("Sign in with invalid password should show error")
+    public void signWithValidEmailPassword() {
+        loginPage.openLoginForm();
+        loginPage.fillEmail("invalid@ar.com");
+        loginPage.fillPassword("Qwerty1!");
+        loginPage.submit();
+        String ExpectedError = "Bad email or password";
+        assertThat(loginPage.getNonActivatedAccError(), is(ExpectedError));
     }
 }
