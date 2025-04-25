@@ -108,6 +108,7 @@ public class TestPractical11 {
     @CsvSource({
             "short, false, Password have from 8 to 20 characters long without spaces and contain at least one uppercase letter (A-Z), one lowercase letter (a-z), a digit (0-9), and a special character (~`!@#$%^&*()+=_-{}[]|:;”’?/<>,.)",
             "verylongpasswordwithmorethan20characters, false, Password must be less than 20 characters long without spaces.",
+            "'', false, This field is required",
             "validPass123!, true, Password is valid"
     })
     public void testPasswordValidate (String password, boolean isValid, String expectedMessage) {

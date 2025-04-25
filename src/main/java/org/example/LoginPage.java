@@ -33,7 +33,12 @@ public class LoginPage {
     private WebElement signInSubmitButton;
     @FindBy(css = ".alert-general-error")
     private WebElement NonActivatedAcc;
-
+    @FindBy(css = "ul.header_lang-switcher-wrp span[aria-hidden]")
+    private WebElement languageDropdown;
+    @FindBy(xpath = "//ul[contains(@class, 'header_lang-switcher-wrp')]//span[text()='En']")
+    private WebElement englishLanguage;
+    @FindBy(xpath = "//ul[contains(@class, 'header_lang-switcher-wrp')]//span[text()='Ua']")
+    private WebElement ukranianLanguage;
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
@@ -50,9 +55,7 @@ public class LoginPage {
         return welcomeText.getText();
     }
 
-    public String getSignInDetailsText() {
-        return signInDetailsText.getText();
-    }
+    public String getSignInDetailsText() {return signInDetailsText.getText();}
 
     public void fillEmail(String email) {
         emailInput.sendKeys(email);
@@ -62,9 +65,7 @@ public class LoginPage {
         passwordInput.sendKeys(password);
     }
 
-    public void submit() {
-        clickSafely(signInSubmitButton);
-    }
+    public void submit() {clickSafely(signInSubmitButton);}
 
     public String getEmailError() {
         return errorEmail.getText();
@@ -84,6 +85,16 @@ public class LoginPage {
 
     public String getPasswordInputValue() {
         return passwordInput.getAttribute("value");
+    }
+
+    public boolean isEnglishLanguageSelected() {return languageDropdown.getText().trim().equals("English");}
+
+    public void selectLanguageIfNeed(String language) {
+        if (!isEnglishLanguageSelected() && language.equals("English")) {
+            languageDropdown.click();
+            wait.until(ExpectedConditions.elementToBeClickable(englishLanguage));
+            englishLanguage.click();
+        }
     }
 
     //Для спрощення кліку по елементах та уникнення ситуацій, коли клік не вдається через перехоплення іншими елементами, або елемент ще не готовий до кліку
