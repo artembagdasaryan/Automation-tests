@@ -1,63 +1,81 @@
 package org.example;
 
 public class Main {
+
     public static void main(String[] args) {
 
-        Bird[] birds = {
-                new Eagle(),
-                new Swallow(),
-                new Penguin(),
-                new Kiwi()
-        };
+        Departament departament1 =
+                new Departament("HR",
+                        new Departament.Address("Kyiv", "Shevchenko", 10));
 
-        for (Bird b : birds) {
-            System.out.println("Bird: " + b.getClass().getSimpleName());
-            System.out.println("Can fly: " + b.fly());
-            System.out.println();
+        Departament departamentClone = departament1.clone();
+
+        System.out.println("Original: " + departament1);
+        System.out.println("Clone: " + departamentClone);
+
+        departamentClone.address.city = "Lviv";
+
+        System.out.println("Original: " + departament1);
+        System.out.println("Clone: " + departamentClone);
+    }
+
+    static class Departament implements Cloneable {
+
+        String name;
+        Address address;
+
+        public Departament(String name, Address address) {
+            this.name = name;
+            this.address = address;
+        }
+
+        static class Address implements Cloneable {
+            String city;
+            String street;
+            int buildingNumber;
+
+            public Address(String city, String street, int buildingNumber) {
+                this.city = city;
+                this.street = street;
+                this.buildingNumber = buildingNumber;
+            }
+
+            @Override
+            public Address clone() {
+                try {
+                    return (Address) super.clone();
+                } catch (CloneNotSupportedException e) {
+                    throw new AssertionError();
+                }
+            }
+
+            @Override
+            public String toString() {
+                return "Address{" +
+                        "city='" + city + '\'' +
+                        ", street='" + street + '\'' +
+                        ", buildingNumber=" + buildingNumber +
+                        '}';
+            }
+        }
+
+        @Override
+        public Departament clone() {
+            try {
+                Departament result = (Departament) super.clone();
+                result.address = address.clone(); // deep copy
+                return result; // ✅ повертаємо result, а не новий clone
+            } catch (CloneNotSupportedException e) {
+                throw new AssertionError();
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "Departament{" +
+                    "name='" + name + '\'' +
+                    ", address=" + address +
+                    '}';
         }
     }
 }
-
-// ====================== ABSTRACT BIRD ======================
-abstract class Bird {
-    protected boolean feathers;
-    protected boolean layEggs;
-
-    public Bird(boolean feathers, boolean layEggs) {
-        this.feathers = feathers;
-        this.layEggs = layEggs;
-    }
-
-    public abstract boolean fly();
-}
-
-// ====================== FLYING BIRD ========================
-abstract class FlyingBird extends Bird {
-    public FlyingBird() {
-        super(true, true);
-    }
-
-    @Override
-    public boolean fly() {
-        return true;
-    }
-}
-
-// =================== NON-FLYING BIRD =======================
-abstract class NonFlyingBird extends Bird {
-    public NonFlyingBird() {
-        super(true, true);
-    }
-
-    @Override
-    public boolean fly() {
-        return false;
-    }
-}
-
-// ====================== SPECIFIC BIRDS ======================
-class Eagle extends FlyingBird {}
-class Swallow extends FlyingBird {}
-
-class Penguin extends NonFlyingBird {}
-class Kiwi extends NonFlyingBird {}
