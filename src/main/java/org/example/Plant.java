@@ -13,9 +13,26 @@ class Plant {
 
     public Plant(int size, String color, String type) {
 
-        this.size = size;
         this.color = validateColor(color);
         this.type = validateType(type);
+        this.size = validateSize(size, this.type);
+    }
+
+    private static int validateSize(int size, Type type) {
+        if (size <= 0) {
+            throw new IllegalArgumentException("Size must be positive");
+        }
+        boolean valid = switch (type) {
+            case FLOWER -> size <= 100;
+            case TREE -> size <= 1000;
+            case SHRUB -> size <= 500;
+            case GRASS -> size <= 50;
+            case FERN -> size <= 200;
+        };
+        if (!valid) {
+            throw new IllegalArgumentException("Size is too large for type: " + type);
+        }
+        return size;
     }
 
     private static Type validateType(String type) {
@@ -38,8 +55,8 @@ class Plant {
     public String toString() {
         return "Plant{" +
                 "size=" + size +
-                ", Color=" + color +
-                ", Type=" + type +
+                ", color=" + color +
+                ", type=" + type +
                 '}';
     }
 
@@ -59,6 +76,9 @@ class Plant {
                 System.out.println("Invalid size. Please enter an integer");
                 i--;
             } catch (ColorException | TypeException e) {
+                System.out.println(e.getMessage());
+                i--;
+            } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
                 i--;
             }
